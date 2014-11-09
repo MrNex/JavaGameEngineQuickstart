@@ -18,7 +18,6 @@ import loader.SpriteLoader;
 public class ContentManager extends Manager {
 
 	//Attributes
-	private HashMap<String, BufferedImage> images;
 	private HashMap<String, Sprite> sprites;
 	private HashMap<String, Level> levels;
 	
@@ -30,14 +29,17 @@ public class ContentManager extends Manager {
 	}
 	
 	//Accessors
+	
 	/**
 	 * Gets an image by name from images hashmap
 	 * @param imageName the desired image's name
 	 * @return The image with the name that was specified
 	 */
+	/*
+	 * Depreciated with introduction of sprites
 	public BufferedImage getImage(String imageName){
 		return images.get(imageName);
-	}
+	}*/
 	
 	public Sprite getSprite(String spriteName){
 		return sprites.get(spriteName);
@@ -61,9 +63,7 @@ public class ContentManager extends Manager {
 	public void init() {
 		//Declare loader variable
 		Loader loader;
-		loader = new ImageLoader();
-		images = loader.loadAll();
-		
+
 		loader = new SpriteLoader();
 		sprites = loader.loadAll();
 		

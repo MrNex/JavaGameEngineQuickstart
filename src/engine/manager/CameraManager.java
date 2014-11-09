@@ -86,6 +86,7 @@ public class CameraManager extends Manager {
 	
 	/**
 	 * Configures the renderer to adhere to the camera's established coordinate system as opposed to the worldSystem.
+	 * By default sets (0, 0) to center of screen.
 	 * @param g2d Reference to the graphics renderer
 	 */
 	public void constructCameraCoordinateSystem(Graphics2D g2d){

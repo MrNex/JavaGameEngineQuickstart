@@ -28,6 +28,22 @@ public class Sprite {
 	private int frameXPos, frameYPos;
 	boolean repeating;
 	
+	//Accessors / Modifiers
+	/**
+	 * Gets the frame width of this sprite
+	 * @return The width of a single frame in the spritesheet
+	 */
+	public int getFrameWidth(){
+		return frameWidth;
+	}
+	
+	/**
+	 * Gets the frameHeight of this sprite
+	 * @return The height of a single frame in the spriteSheet
+	 */
+	public int getFrameHeight(){
+		return frameHeight;
+	}
 	
 	/**
 	 * Constructs a Sprite
@@ -151,7 +167,7 @@ public class Sprite {
 	public void draw(Graphics2D g2d, int xPos, int yPos, int width, int height){
 		//Draw the spriteSheet
 		g2d.drawImage(spriteSheet,
-				xPos, yPos, xPos + width, yPos + height, 
+				(int)(xPos - width / 2.0), (int)(yPos - height / 2.0), (int)(xPos + width / 2.0), (int)(yPos + height / 2.0), 
 				frameXPos, frameYPos, frameXPos + frameWidth, frameYPos + frameHeight, null);
 	}
 

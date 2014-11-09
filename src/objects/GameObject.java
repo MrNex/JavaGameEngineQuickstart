@@ -10,6 +10,7 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 
 import mathematics.*;
+import sprites.Sprite;
 import state.object.ObjectState;
 import triggers.Trigger;
 
@@ -27,7 +28,7 @@ public class GameObject {
 	protected boolean visible;
 	protected boolean solid;
 	protected RectangularShape shape;
-	protected BufferedImage image;
+	protected Sprite sprite;
 	protected Color color;
 	protected Stack<ObjectState> stateStack;
 	protected boolean triggerable;
@@ -63,7 +64,7 @@ public class GameObject {
 		shape = null;
 		color = Color.black;
 
-		image = null;
+		sprite = null;
 
 		triggerable = false;
 		
@@ -287,11 +288,19 @@ public class GameObject {
 	}
 
 	/**
+	 * Gets the sprite of this gameObject
+	 * @return The sprite currently attached to this game object
+	 */
+	public Sprite getSprite(){
+		return sprite;
+	}
+	
+	/**
 	 * Sets the image of the gameObject
 	 * @param newImage The new image
 	 */
-	public void setImage(BufferedImage newImage){
-		image = newImage;
+	public void setSprite(Sprite newSprite){
+		sprite = newSprite;
 	}
 
 	/**
@@ -367,6 +376,14 @@ public class GameObject {
 		if(isRunning()){
 			getCurrentState().update();
 		}
+		if(isVisible()){
+			if(sprite != null){
+				sprite.update();
+			}
+			else if(shape != null){
+				updateShape();
+			}
+		}
 	}
 
 	/**
@@ -390,10 +407,11 @@ public class GameObject {
 
 		if(visible){
 			
-			//If they have an image
-			if(image != null){				
+			//If they have a 
+			if(sprite != null){				
 				//Note to self: drawImage does not use a position, width and height. Instead it uses a top left corner position and a bottom right corner position.
-				g2d.drawImage(image, (int)(-1*(width/2)), (int)(-1*(height/2)), (int)width/2, (int)height/2, 0, 0, image.getWidth(), image.getHeight(), null);
+				//g2d.drawImage(image, (int)(-1*(width/2)), (int)(-1*(height/2)), (int)width/2, (int)height/2, 0, 0, image.getWidth(), image.getHeight(), null);
+				sprite.draw(g2d, 0, 0, (int)width, (int)height);
 			}
 			else if(shape != null){
 				//Set the color
@@ -425,8 +443,8 @@ public class GameObject {
 		//Construct affine transformation
 		AffineTransform transform = currentSystem;
 
-		//translation the affine transformation to the center position of where this gameObject should be
-		transform.translate(position.getComponent(0) + (width / 2), position.getComponent(1) + (height / 2));
+		//translation the affine transformation to the (top left) position of where this gameObject should be
+		transform.translate(position.getComponent(0), position.getComponent(1));
 
 		//Get angle of rotation
 		double angle = forward.getAngle();
