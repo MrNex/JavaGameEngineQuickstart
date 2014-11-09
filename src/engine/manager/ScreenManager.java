@@ -72,7 +72,7 @@ public class ScreenManager extends Manager{
 		backgroundColor = Color.red;
 
 		//Create the window
-		window = new JFrame("RatattackThing V 0.1");
+		window = new JFrame("Blank Engine");
 		window.setSize(width, height);
 
 		//Create the panel

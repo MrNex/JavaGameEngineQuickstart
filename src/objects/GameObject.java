@@ -6,6 +6,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 import mathematics.*;
 import state.object.ObjectState;
@@ -27,7 +29,7 @@ public class GameObject {
 	protected RectangularShape shape;
 	protected BufferedImage image;
 	protected Color color;
-	protected ObjectState currentState;
+	protected Stack<ObjectState> stateStack;
 	protected boolean triggerable;
 	protected ArrayList<Trigger> triggers;
 
@@ -54,8 +56,6 @@ public class GameObject {
 
 		//Set default attributes
 		visible = false;
-
-		currentState = null;
 
 		shape = null;
 		color = Color.black;
@@ -174,16 +174,13 @@ public class GameObject {
 	}
 
 	/**
-	 * Sets the state of an {@link GameObject}.
-	 * 
-	 * If object isn't working see {@link setRunning()}
+	 * pushes a {@link ObjectState} to the top
+	 * Of this gameObject's stateStack
 	 * @param newState State to attach to object
 	 */
-	public void setState(ObjectState newState){
-		//If not leaving a null state
-		if(currentState != null)
-			currentState.exit();
-		currentState = newState;
+	public void pushState(ObjectState newState){
+		//Push state onto stack
+		stateStack.push(newState);
 
 		//If not going into a null state
 		if(newState != null){
@@ -191,13 +188,41 @@ public class GameObject {
 			newState.enter();
 		}
 	}
+	
+	/**
+	 * Pops the current state off of the state stack.
+	 * If the current state isn't null, it's exit method will be called.
+	 */
+	public void popState(){
+		ObjectState poppedState;
+		try{
+			poppedState = stateStack.pop();
+		}
+		catch(EmptyStackException e){
+			poppedState = null;
+			System.out.println("No state to pop off of object.");
+		}
+		
+		if(poppedState != null){
+			poppedState.exit();
+		}
+	}
 
 	/**
-	 * Gets the state of this gameObject
-	 * @return The state currently attached to thisgameObject
+	 * Gets the current state of this gameObject
+	 * @return The state on top of this gameObject's stateStack
 	 */
-	public ObjectState getState(){
-		return currentState;
+	public ObjectState getCurrentState(){
+		ObjectState returnState;
+		try{
+			returnState = stateStack.peek();
+		}
+		catch(EmptyStackException e){
+			returnState = null;
+			System.out.println("No state to get from object.");
+		}
+		
+		return returnState;
 	}
 
 	/**
@@ -222,7 +247,7 @@ public class GameObject {
 	 */
 	public boolean isRunning(){
 		//return running;
-		return getState() != null;
+		return getCurrentState() != null;
 	}
 	
 	/**
@@ -337,7 +362,7 @@ public class GameObject {
 	 */
 	public void update(){
 		if(isRunning()){
-			currentState.update();
+			getCurrentState().update();
 		}
 	}
 
@@ -377,7 +402,7 @@ public class GameObject {
 			//If this obj is running
 			if(isRunning()){
 				//Draw it's state
-				currentState.drawEffects(g2d);
+				getCurrentState().drawEffects(g2d);
 			}
 		}
 

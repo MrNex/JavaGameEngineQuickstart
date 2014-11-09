@@ -53,7 +53,7 @@ public class Engine {
 			stateStack.pop();
 		}
 		catch(EmptyStackException e){
-			System.out.println("No state to pop from stack.");
+			System.out.println("No state to pop from engine state stack.");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class Engine {
 		}
 		catch(EmptyStackException e){
 			returnState = null;
-			System.out.println("No state to get.");
+			System.out.println("No state to get from engine.");
 		}
 		
 		return returnState;

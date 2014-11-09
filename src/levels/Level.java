@@ -81,10 +81,10 @@ public class Level {
 				//For every gameObject currently in the map at this xPositino
 				for(GameObject inMap : map.get((int)obj.getXPos())){
 
-					if(obj.getState() == null && inMap.getState() != null) continue;
-					if(inMap.getState() == null && obj.getState() != null) continue;
+					if(obj.getCurrentState() == null && inMap.getCurrentState() != null) continue;
+					if(inMap.getCurrentState() == null && obj.getCurrentState() != null) continue;
 					//If they have the same state and are both triggerable or not
-					if(((obj.getState() == null && inMap.getState() == null) || obj.getState().getClass() == inMap.getState().getClass()) && obj.isTriggerable() == inMap.isTriggerable()){
+					if(((obj.getCurrentState() == null && inMap.getCurrentState() == null) || obj.getCurrentState().getClass() == inMap.getCurrentState().getClass()) && obj.isTriggerable() == inMap.isTriggerable()){
 						
 						//Set boolean indicating if their triggers are equal
 						boolean equalTriggers = true;
