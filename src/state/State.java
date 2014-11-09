@@ -22,6 +22,7 @@ public abstract class State {
 	 * Initializes any member variables in this state
 	 */
 	protected abstract void init();
+	
 
 	/**
 	 * Updates this state

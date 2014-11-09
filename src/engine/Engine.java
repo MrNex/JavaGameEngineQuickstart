@@ -2,6 +2,8 @@ package engine;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 import javax.swing.Timer;
 
@@ -29,10 +31,51 @@ public class Engine {
 
 	//Attributes
 	private boolean running;
-	private EngineState currentState;
+	private Stack<EngineState> stateStack;
 	private Manager[] managers;
 	private Timer drawTimer;
 
+	
+	//Accessors / Modifiers
+	/**
+	 * Pushes a new state onto the state stack
+	 * @param newState State to push as new current state
+	 */
+	public void pushState(EngineState newState){
+		stateStack.push(newState);
+	}
+	
+	/**
+	 * Pops the current state off of the stack if there is one
+	 */
+	public void popState(){
+		try{
+			stateStack.pop();
+		}
+		catch(EmptyStackException e){
+			System.out.println("No state to pop from stack.");
+		}
+	}
+	
+	/**
+	 * Gets the current state from the state stack
+	 * @return The state on top of the state stack
+	 */
+	public EngineState getCurrentState(){
+		
+		EngineState returnState;
+		try{
+			returnState = stateStack.peek();
+		}
+		catch(EmptyStackException e){
+			returnState = null;
+			System.out.println("No state to get.");
+		}
+		
+		return returnState;
+	}
+	
+	
 	/**
 	 * Constructs an engine
 	 */
@@ -44,13 +87,15 @@ public class Engine {
 	 * Initializes engine members
 	 */
 	public void init()
-	{
+	{	
 		//Set this as current instance of engine
 		currentInstance = this;
 
 		//Set internal variables
 		running = false;
 
+		//Initialize state stack
+		stateStack = new Stack<EngineState>();
 
 		//Create managers
 		managers = new Manager[5];
@@ -68,7 +113,7 @@ public class Engine {
 
 
 		//Create the current state
-		currentState = new EngineState();
+		pushState(new EngineState());
 		
 		
 		//Create objects!
@@ -117,21 +162,13 @@ public class Engine {
 			managers[Managers.INPUTMANAGER.ordinal()].update();
 
 			//TODO: Offload to statemanager to keep track of stateStack
-			currentState.update();
+			getCurrentState().update();
 
 			//After objects update, update collisions.
 			managers[Managers.COLLISIONMANAGER.ordinal()].update();
 		}
 	}
 
-	/**
-	 * Gets the current state of the engine
-	 * @return The current state of the engine
-	 */
-	public EngineState getCurrentState()
-	{
-		return currentState;
-	}
 
 	/**
 	 * Gets an engine components manager.
