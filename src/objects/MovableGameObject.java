@@ -20,26 +20,7 @@ import mathematics.Vec;
 public class MovableGameObject extends GameObject {
 
 	//Attributes
-	protected GameObject activeCheckpoint;
 	protected Vec previousPosition;
-
-	//Accessors/modifiers
-	/**
-	 * Sets the activeCheckPoint to a specified gameObject
-	 * Specified gameObject should probably not be solid.
-	 * @param checkpoint gameObject with attached checkpoint trigger
-	 */
-	public void setActiveCheckpoint(GameObject checkpoint){
-		activeCheckpoint = checkpoint;
-	}
-
-	/**
-	 * Gets the activeCheckpoint of this movableGameObject
-	 * @return The last object with an attached CheckpointTrigger that this movable game object touched
-	 */
-	public GameObject getActiveCheckpoint(){
-		return activeCheckpoint;
-	}
 
 	public MovableGameObject(double xx, double yy, double w, double h, Vec fwd) {
 		super(xx, yy, w, h, fwd);
