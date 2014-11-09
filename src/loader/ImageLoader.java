@@ -28,15 +28,7 @@ public class ImageLoader extends Loader<BufferedImage>{
 		HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 		
 		//for each file in the directory which has the proper extension
-		for(File f : getDirectory().listFiles(
-			new FilenameFilter(){
-
-				@Override
-				public boolean accept(File arg0, String arg1) {
-					return arg1.endsWith(ext);
-				}
-			}
-		)){
+		for(File f : getValidFiles()){
 			//Store filename
 			String fileName = f.getName();
 			//Create key

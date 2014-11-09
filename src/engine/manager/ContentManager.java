@@ -3,10 +3,12 @@ package engine.manager;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import sprites.Sprite;
 import levels.Level;
 import loader.ImageLoader;
 import loader.LevelLoader;
 import loader.Loader;
+import loader.SpriteLoader;
 
 /**
  * Class defines a component of the engine which manages all content and assets
@@ -17,6 +19,7 @@ public class ContentManager extends Manager {
 
 	//Attributes
 	private HashMap<String, BufferedImage> images;
+	private HashMap<String, Sprite> sprites;
 	private HashMap<String, Level> levels;
 	
 	/**
@@ -34,6 +37,10 @@ public class ContentManager extends Manager {
 	 */
 	public BufferedImage getImage(String imageName){
 		return images.get(imageName);
+	}
+	
+	public Sprite getSprite(String spriteName){
+		return sprites.get(spriteName);
 	}
 	
 	/**
@@ -56,6 +63,9 @@ public class ContentManager extends Manager {
 		Loader loader;
 		loader = new ImageLoader();
 		images = loader.loadAll();
+		
+		loader = new SpriteLoader();
+		sprites = loader.loadAll();
 		
 		//TODO: Swap to implementation of level loader
 		//loader = new LevelLoader();

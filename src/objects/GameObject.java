@@ -53,6 +53,9 @@ public class GameObject {
 
 		width = w;
 		height = h;
+		
+		//Initiaize state stack
+		stateStack = new Stack<ObjectState>();
 
 		//Set default attributes
 		visible = false;
@@ -392,7 +395,7 @@ public class GameObject {
 				//Note to self: drawImage does not use a position, width and height. Instead it uses a top left corner position and a bottom right corner position.
 				g2d.drawImage(image, (int)(-1*(width/2)), (int)(-1*(height/2)), (int)width/2, (int)height/2, 0, 0, image.getWidth(), image.getHeight(), null);
 			}
-			else{
+			else if(shape != null){
 				//Set the color
 				g2d.setColor(color);
 				//Fill the shape

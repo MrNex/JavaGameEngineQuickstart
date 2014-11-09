@@ -7,6 +7,8 @@ import java.util.Stack;
 
 import javax.swing.Timer;
 
+import mathematics.Vec;
+import objects.GameObject;
 import engine.manager.*;
 import state.*;
 import state.engine.*;
@@ -26,7 +28,7 @@ public class Engine {
 
 	//Enums
 	public enum Managers{
-		INPUTMANAGER, COLLISIONMANAGER, CONTENTMANAGER, CAMERAMANAGER, SCREENMANAGER
+		INPUTMANAGER, COLLISIONMANAGER, CONTENTMANAGER, CAMERAMANAGER, SCREENMANAGER, SPRITEMANAGER
 	}
 
 	//Attributes
@@ -98,18 +100,20 @@ public class Engine {
 		stateStack = new Stack<EngineState>();
 
 		//Create managers
-		managers = new Manager[5];
+		managers = new Manager[6];
 
 		//Create input manager
 		managers[Managers.INPUTMANAGER.ordinal()] = new InputManager();
 		//Creates collision manager
 		managers[Managers.COLLISIONMANAGER.ordinal()] = new CollisionManager();
-		//Creates content manager, uses ImageLoader and LevelLoader to load content during initialization
+		//Creates content manager, uses ImageLoader, SpriteLoader, and LevelLoader to load content during initialization
 		managers[Managers.CONTENTMANAGER.ordinal()] = new ContentManager();
 		//Create the camera manager
 		managers[Managers.CAMERAMANAGER.ordinal()] = new CameraManager();
 		//Creates the screen manager, hooking up input manager to the game window.
 		managers[Managers.SCREENMANAGER.ordinal()] = new ScreenManager();
+		//Creates the Sprite Manager
+		managers[Managers.SPRITEMANAGER.ordinal()] = new SpriteManager();
 
 
 		//Create the current state
@@ -134,14 +138,13 @@ public class Engine {
 
 		drawTimer.setRepeats(true);
 
-
 	}
 
 	/**
 	 * Begins running the engine
 	 */
 	public void start()
-	{
+	{		
 		//Set running to true
 		running = true;
 		//Begin drawloop
@@ -163,7 +166,7 @@ public class Engine {
 
 			//TODO: Offload to statemanager to keep track of stateStack
 			getCurrentState().update();
-
+			managers[Managers.SPRITEMANAGER.ordinal()].update();
 			//After objects update, update collisions.
 			managers[Managers.COLLISIONMANAGER.ordinal()].update();
 		}
